@@ -1,7 +1,6 @@
 import streamlit as st
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
-from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_tavily import TavilySearch
 import os
 from dotenv import load_dotenv
@@ -10,6 +9,12 @@ load_dotenv()
 
 GEMINI_KEY = os.getenv("GEMINI_API_KEY")
 TAVILY_KEY = os.getenv("TAVILY_API_KEY")
+
+st.set_page_config(page_title="AI Project Generator", layout="wide")
+st.title("🚀 AI-Powered Project Idea Generator")
+st.write("Enter any industry or technology to generate 3 creative, grounded project ideas.")
+
+topic = st.text_input("**Enter topic / industry:**", "3D Visualization")
 
 PROMPT = """
 You are a highly creative and well-informed project generator. Your task is to provide three novel, actionable project ideas based on the user's input industry or technology.
@@ -38,10 +43,10 @@ agent = create_agent(
     model=llm
 )
 
-topic = "3D Visualization"
+if st.button("Generate Project Ideas"):
+    with st.spinner("Generating ideas..."):
+        full_prompt = f"{PROMPT}\n\nUSER TOPIC: {topic}"
+        response = agent.invoke({"messages": ["user", full_prompt]})
 
-full_prompt = f"{PROMPT}\n\nUSER TOPIC: {topic}"
-
-response = agent.invoke({"messages": ["user", full_prompt]})
-final = response["messages"][-1].content[0]["text"]
-print(final)
+        final_output = response["messages"][-1].content[0]["text"]
+        st.markdown(final_output)
