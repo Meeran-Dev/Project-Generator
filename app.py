@@ -14,8 +14,6 @@ st.set_page_config(page_title="AI Project Generator", layout="wide")
 st.title("🚀 AI-Powered Project Idea Generator")
 st.write("Enter any industry or technology to generate 3 creative, grounded project ideas.")
 
-topic = st.text_input("**Enter topic / industry:**", "3D Visualization")
-
 PROMPT = """
 You are a highly creative and well-informed project generator. Your task is to provide three novel, actionable project ideas based on the user's input industry or technology.
 
@@ -42,6 +40,8 @@ agent = create_agent(
     tools=[tool],
     model=llm
 )
+
+topic = st.text_input("**Enter topic / industry:**", "3D Visualization")
 
 if st.button("Generate Project Ideas"):
     with st.spinner("Generating ideas..."):
