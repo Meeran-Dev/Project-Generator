@@ -4,6 +4,7 @@ langchain
 langchain-google-genai
 langchain-tavily
 langchain-community
+langhchain-core
 tavily-python
 google-generativeai
 requests
